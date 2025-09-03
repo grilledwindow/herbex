@@ -10,18 +10,29 @@ Simple script for interacting with Herbstluftwm hooks.
 
 ## Build
 
-1. Generate `herbex` executable: `mix escript.build`
-2. Copy/move/symlink executable: `ln -s $(pwd)/herbex ~/.local/bin/`
-    - Note: full path is required for symlink to work properly
-3. Configure `herbstluftwm`:
-    - In `herbstluftwm/autostart`:
-    ```bash
-    hc keybind $Mod-c spawn ~/.config/herbstluftwm/cwd_xterm.sh &
-    hc keybind $Mod-Shift-c chain , split bottom 0.5 , focus d , spawn ~/.config/herbstluftwm/cwd_xterm.sh &
-    ```
-    - Script to launch `xterm` in dir:
-    ```bash
-    #!/bin/bash
-    cd $(cat ~/.cwd) && exec xterm
-    ```
+1. Generate `herbex` executable
+```bash
+mix escript.build
+```
+
+2. Copy/move/symlink executable
+```bash
+ln -s $(pwd)/herbex ~/.local/bin/
+```
+  - Note: full path is required for symlink to work properly
+
+3. Configure `herbstluftwm/autostart`
+```bash
+~/.local/bin/herbex &
+hc keybind $Mod-c spawn ~/.config/herbstluftwm/cwd_xterm.sh &
+hc keybind $Mod-Shift-c chain , split bottom 0.5 , focus d , spawn ~/.config/herbstluftwm/cwd_xterm.sh &
+```
+
+4. Script to launch `xterm` with last focused window's directory
+`~/.config/herbstluftwm/cwd_xterm.sh`
+```bash
+#!/bin/bash
+cd $(cat ~/.cwd) && exec xterm
+```
+  - Remember to `chmod +x <script>`
     
